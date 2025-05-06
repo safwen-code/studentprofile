@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Box, Container, Grid, useMediaQuery } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
-import Navbar from '../layout/Navbar'
+import Navbar from '../layout/Navbar.jsx'
 import AboutMe from '../Screens/AboutMe.jsx'
 import Containers from './Containers.jsx'
 import { motion } from 'framer-motion'
 
-// Styled Paper with white border and rounded corners
+// Styled card
 const StyledCard = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#0F0F0F', // Match the dark theme
+  backgroundColor: '#0F0F0F',
   border: '1px solid white',
   borderRadius: '20px',
   padding: theme.spacing(2),
@@ -18,7 +18,7 @@ const StyledCard = styled(Paper)(({ theme }) => ({
 }))
 
 const MainContainer = () => {
-  const [activeNavItem, setActiveNavItem] = useState('description')
+  const [activeNavItem, setActiveNavItem] = useState('Home')
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -33,12 +33,15 @@ const MainContainer = () => {
         minHeight: '100vh',
       }}
     >
-      {isMobile && (
-        <Navbar
-          activeNavItem={activeNavItem}
-          setActiveNavItem={setActiveNavItem}
-        />
-      )}
+      {/* Always show Navbar at the top */}
+      <Box mb={4}>
+        <StyledCard>
+          <Navbar
+            activeNavItem={activeNavItem}
+            setActiveNavItem={setActiveNavItem}
+          />
+        </StyledCard>
+      </Box>
 
       <Box sx={{ flexGrow: 1 }} p={2}>
         <Grid container spacing={4}>
@@ -57,17 +60,6 @@ const MainContainer = () => {
 
           {/* Right Column */}
           <Grid item xs={12} md={8}>
-            {!isMobile && (
-              <Box mb={3}>
-                <StyledCard>
-                  <Navbar
-                    activeNavItem={activeNavItem}
-                    setActiveNavItem={setActiveNavItem}
-                  />
-                </StyledCard>
-              </Box>
-            )}
-
             <StyledCard>
               <Containers activeNavItem={activeNavItem} />
             </StyledCard>
