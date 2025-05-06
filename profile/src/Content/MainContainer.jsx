@@ -1,72 +1,82 @@
-import React, { useState } from 'react'
 import { Box, Container, Grid, useMediaQuery } from '@mui/material'
-import { styled, useTheme } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
-import Navbar from '../layout/Navbar.jsx'
-import AboutMe from '../Screens/AboutMe.jsx'
-import Containers from './Containers.jsx'
-import { motion } from 'framer-motion'
-
-// Styled card
-const StyledCard = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#0F0F0F',
-  border: '1px solid white',
-  borderRadius: '20px',
-  padding: theme.spacing(2),
-  color: 'white',
-  boxShadow: '0px 0px 20px rgba(255, 255, 255, 0.05)',
-}))
+import { useTheme } from '@mui/material/styles'
+import AboutMe from '../Screens/AboutMe'
+import Navbar from '../layout/Navbar'
 
 const MainContainer = () => {
-  const [activeNavItem, setActiveNavItem] = useState('Home')
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Container
-      fixed
-      maxWidth="xl"
+    <Box
       sx={{
-        background: 'linear-gradient(to right, #1f1f1f, #121212)',
-        color: '#fff',
-        py: 8,
         minHeight: '100vh',
+        background: 'radial-gradient(circle at left, #2d0b3f, #121212)',
+        px: { xs: 2, sm: 4 },
+        py: { xs: 4, sm: 6 },
       }}
     >
-      {/* Always show Navbar at the top */}
-      <Box mb={4}>
-        <StyledCard>
-          <Navbar
-            activeNavItem={activeNavItem}
-            setActiveNavItem={setActiveNavItem}
-          />
-        </StyledCard>
-      </Box>
-
-      <Box sx={{ flexGrow: 1 }} p={2}>
-        <Grid container spacing={4}>
-          {/* Left Column */}
-          <Grid item xs={12} md={4}>
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              transition={{ type: 'spring', stiffness: 100, damping: 15 }}
-            >
-              <StyledCard>
-                <AboutMe />
-              </StyledCard>
-            </motion.div>
-          </Grid>
-
-          {/* Right Column */}
-          <Grid item xs={12} md={8}>
-            <StyledCard>
-              <Containers activeNavItem={activeNavItem} />
-            </StyledCard>
-          </Grid>
+      <Grid container spacing={4} justifyContent="center">
+        {/* LEFT SIDEBAR */}
+        <Grid item xs={12} md={4}>
+          <Box
+            sx={{
+              backgroundColor: '#0f0f0f',
+              borderRadius: 3,
+              p: 3,
+              height: '100%',
+              boxShadow: '0 0 20px rgba(255, 255, 255, 0.05)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+          >
+            <AboutMe />
+          </Box>
         </Grid>
-      </Box>
-    </Container>
+
+        {/* RIGHT SECTION */}
+        <Grid item xs={12} md={8}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+            }}
+          >
+            {/* FLOATING NAVBAR */}
+            <Box
+              sx={{
+                backgroundColor: '#0f0f0f',
+                borderRadius: 3,
+                p: 1,
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
+                // maxWidth: 400,
+                mx: 'auto',
+              }}
+            >
+              <Navbar />
+            </Box>
+
+            {/* MAIN CONTENT CARD */}
+            <Box
+              sx={{
+                backgroundColor: '#0f0f0f',
+                borderRadius: 3,
+                p: 4,
+                boxShadow: '0 0 20px rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <Container />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 
