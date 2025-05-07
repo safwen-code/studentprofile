@@ -37,7 +37,7 @@ const AboutMe = () => {
         pt: 10, // Padding top to make room for floating image
         px: 2,
         pb: 3,
-        maxWidth: 350,
+        maxWidth: 1000,
         mx: 'auto',
         textAlign: 'center',
         overflow: 'visible',

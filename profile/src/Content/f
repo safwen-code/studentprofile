@@ -1,0 +1,90 @@
+import React, { useState } from 'react'
+import { Box, Container, Grid, useMediaQuery } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import Paper from '@mui/material/Paper'
+import Navbar from '../layout/Navbar.jsx'
+import AboutMe from '../Screens/AboutMe.jsx'
+import Containers from './Containers.jsx'
+import { motion } from 'framer-motion'
+
+// Styled card
+const StyledCard = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#0F0F0F',
+  border: '1px solid #f06292', // Pink border like in your design
+  borderRadius: '20px',
+  padding: theme.spacing(1),
+  color: 'white',
+  boxShadow: '0px 0px 20px rgba(255, 255, 255, 0.05)',
+}))
+
+const MainContainer = () => {
+  const [activeNavItem, setActiveNavItem] = useState('Home')
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+
+  return (
+    <Container
+      fixed
+      maxWidth="xl"
+      sx={{
+        background: 'linear-gradient(to right, #1f1f1f, #121212)',
+        color: '#fff',
+        py: 8,
+      }}
+    >
+      {isMobile && (
+        <Navbar
+          activeNavItem={activeNavItem}
+          setActiveNavItem={setActiveNavItem}
+        />
+      )}
+      {/* Navbar directly above grid
+      <Box mb={4}>
+        <Navbar
+          activeNavItem={activeNavItem}
+          setActiveNavItem={setActiveNavItem}
+        />
+      </Box> */}
+
+      <Box sx={{ flexGrow: 1 }} p={2} mt={2}>
+        <Grid container spacing={3}>
+          {/* AboutMe section - left column */}
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+            >
+              <StyledCard>
+                <AboutMe />
+              </StyledCard>
+            </motion.div>
+          </Grid>
+
+          {/* Right section - 8 columns */}
+          <Grid item xs={12} md={8}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              {!isMobile && (
+                <StyledCard>
+                  <Navbar
+                    activeNavItem={activeNavItem}
+                    setActiveNavItem={setActiveNavItem}
+                  />
+                </StyledCard>
+              )}
+              <StyledCard>
+                <Containers activeNavItem={activeNavItem} />
+              </StyledCard>
+            </motion.div>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
+  )
+}
+
+export default MainContainer

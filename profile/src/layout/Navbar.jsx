@@ -10,7 +10,10 @@ import {
   ListItemText,
   Box,
   Button,
+  Typography,
+  Avatar,
   useMediaQuery,
+  Container,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/Home'
@@ -22,117 +25,158 @@ import { useTheme } from '@mui/material/styles'
 
 const navItems = [
   { label: 'Home', icon: <HomeIcon /> },
-  { label: 'Resume', icon: <DescriptionIcon /> },
   { label: 'Works', icon: <WorkIcon /> },
+  { label: 'Resume', icon: <DescriptionIcon /> },
   { label: 'Blogs', icon: <ArticleIcon /> },
   { label: 'Contact', icon: <ContactsIcon /> },
 ]
 
-const Navbar = () => {
+const Navbar = ({ activeNavItem, setActiveNavItem }) => {
   const [open, setOpen] = useState(false)
-  const [active, setActive] = useState(0)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
-  const handleNavClick = (index) => {
-    setActive(index)
+  const handleNavClick = (label) => {
+    setActiveNavItem(label)
     setOpen(false)
   }
 
   return (
-    <>
+    <Box
+      mt={2}
+      style={{ position: 'sticky', top: 0, zIndex: 999, margin: '40px' }}
+    >
       <AppBar
         position="static"
         sx={{
-          backgroundColor: '#111',
-          boxShadow: 'none',
-          borderRadius: 3,
-          mt: 2,
-          mx: 'auto',
-          maxWidth: 600,
-          px: 2,
+          borderRadius: 2,
+          bgcolor: '#111',
+          color: 'white',
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          {isMobile ? (
-            <>
-              <IconButton onClick={() => setOpen(true)} color="inherit">
-                <MenuIcon />
-              </IconButton>
-              <Drawer anchor="left" open={open} onClose={() => setOpen(false)}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            {isMobile ? (
+              <>
+                {/* Mobile Menu Icon */}
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={() => setOpen(true)}
+                  sx={{ mr: 2, display: { xs: 'flex', md: 'none' } }}
+                >
+                  <MenuIcon />
+                </IconButton>
+
+                {/* Drawer for mobile */}
+                <Drawer
+                  anchor="left"
+                  open={open}
+                  onClose={() => setOpen(false)}
+                >
+                  <Box
+                    sx={{
+                      width: 250,
+                      backgroundColor: '#111',
+                      height: '100%',
+                      p: 2,
+                    }}
+                  >
+                    <List>
+                      {navItems.map((item) => (
+                        <ListItemButton
+                          key={item.label}
+                          onClick={() => handleNavClick(item.label)}
+                          sx={{
+                            mb: 1,
+                            borderRadius: 2,
+                            background:
+                              activeNavItem === item.label
+                                ? 'linear-gradient(to right, #ff416c, #ff4b2b)'
+                                : 'transparent',
+                            color:
+                              activeNavItem === item.label ? 'white' : 'gray',
+                          }}
+                        >
+                          <ListItemIcon
+                            sx={{
+                              color:
+                                activeNavItem === item.label ? 'white' : 'gray',
+                            }}
+                          >
+                            {item.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={item.label} />
+                        </ListItemButton>
+                      ))}
+                    </List>
+                  </Box>
+                </Drawer>
+
+                {/* Mobile Branding */}
+                <Avatar sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                <Typography
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    display: { xs: 'flex', md: 'none' },
+                    flexGrow: 1,
+                    fontWeight: 700,
+                    letterSpacing: '.1rem',
+                  }}
+                >
+                  DJEBBI
+                </Typography>
+              </>
+            ) : (
+              <>
+                {/* Desktop Branding */}
+
+                {/* Desktop Nav Buttons */}
                 <Box
                   sx={{
-                    width: 250,
-                    backgroundColor: '#111',
-                    height: '100%',
-                    p: 2,
+                    flexGrow: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 2,
                   }}
                 >
-                  <List>
-                    {navItems.map((item, index) => (
-                      <ListItemButton
-                        key={index}
-                        onClick={() => handleNavClick(index)}
-                        sx={{
-                          mb: 1,
-                          borderRadius: 2,
-                          background:
-                            active === index
-                              ? 'linear-gradient(to right, #ff416c, #ff4b2b)'
-                              : 'transparent',
-                          color: active === index ? 'white' : 'gray',
-                        }}
-                      >
-                        <ListItemIcon
-                          sx={{ color: active === index ? 'white' : 'gray' }}
-                        >
-                          {item.icon}
-                        </ListItemIcon>
-                        <ListItemText primary={item.label} />
-                      </ListItemButton>
-                    ))}
-                  </List>
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.label}
+                      onClick={() => handleNavClick(item.label)}
+                      startIcon={item.icon}
+                      sx={{
+                        color: activeNavItem === item.label ? '#fff' : 'gray',
+                        background:
+                          activeNavItem === item.label
+                            ? 'linear-gradient(to right, #ff416c, #ff4b2b)'
+                            : 'transparent',
+                        border:
+                          activeNavItem === item.label
+                            ? '2px solid white'
+                            : 'none',
+                        borderRadius: 2,
+                        px: 2,
+                        py: 1,
+                        fontWeight: 'bold',
+                        textTransform: 'capitalize',
+                        '&:hover': {
+                          background: 'rgba(255,255,255,0.1)',
+                        },
+                      }}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
                 </Box>
-              </Drawer>
-            </>
-          ) : (
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-                width: '100%',
-                justifyContent: 'center',
-              }}
-            >
-              {navItems.map((item, index) => (
-                <Button
-                  key={index}
-                  onClick={() => handleNavClick(index)}
-                  startIcon={item.icon}
-                  sx={{
-                    color: active === index ? '#fff' : 'gray',
-                    background:
-                      active === index
-                        ? 'linear-gradient(to right, #ff416c, #ff4b2b)'
-                        : 'rgba(255,255,255,0.05)',
-                    borderRadius: 2,
-                    px: 2,
-                    py: 1,
-                    fontWeight: 'bold',
-                    textTransform: 'none',
-                    '&:hover': {
-                      background: 'rgba(255,255,255,0.1)',
-                    },
-                  }}
-                >
-                  {item.label}
-                </Button>
-              ))}
-            </Box>
-          )}
-        </Toolbar>
+              </>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
-    </>
+    </Box>
   )
 }
 

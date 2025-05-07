@@ -1,9 +1,12 @@
-import { Box, Container, Grid, useMediaQuery } from '@mui/material'
+import { Box, Grid, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import AboutMe from '../Screens/AboutMe'
 import Navbar from '../layout/Navbar'
+import { useState } from 'react'
+import Containers from './Containers'
 
 const MainContainer = () => {
+  const [activeNavItem, setActiveNavItem] = useState('Home')
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -16,6 +19,12 @@ const MainContainer = () => {
         py: { xs: 4, sm: 6 },
       }}
     >
+      {isMobile && (
+        <Navbar
+          activeNavItem={activeNavItem}
+          setActiveNavItem={setActiveNavItem}
+        />
+      )}
       <Grid container spacing={4} justifyContent="center">
         {/* LEFT SIDEBAR */}
         <Grid item xs={12} md={4}>
@@ -38,13 +47,7 @@ const MainContainer = () => {
 
         {/* RIGHT SECTION */}
         <Grid item xs={12} md={8}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-            }}
-          >
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             {/* FLOATING NAVBAR */}
             <Box
               sx={{
@@ -52,14 +55,17 @@ const MainContainer = () => {
                 borderRadius: 3,
                 p: 1,
                 display: 'flex',
-                justifyContent: 'space-around',
+                justifyContent: 'center',
                 alignItems: 'center',
                 boxShadow: '0 0 20px rgba(255, 255, 255, 0.1)',
-                // maxWidth: 400,
-                mx: 'auto',
               }}
             >
-              <Navbar />
+              {!isMobile && (
+                <Navbar
+                  activeNavItem={activeNavItem}
+                  setActiveNavItem={setActiveNavItem}
+                />
+              )}
             </Box>
 
             {/* MAIN CONTENT CARD */}
@@ -71,7 +77,7 @@ const MainContainer = () => {
                 boxShadow: '0 0 20px rgba(255, 255, 255, 0.05)',
               }}
             >
-              <Container />
+              <Containers activeNavItem={activeNavItem} />
             </Box>
           </Box>
         </Grid>

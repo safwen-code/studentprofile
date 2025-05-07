@@ -5,7 +5,6 @@ import CodeIcon from '@mui/icons-material/Code'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import WebIcon from '@mui/icons-material/Web'
-import FavoriteIcon from '@mui/icons-material/Favorite'
 
 const services = [
   {
@@ -56,8 +55,15 @@ const clientLogos = [
 
 const Description = () => {
   return (
-    <Box sx={{ backgroundColor: '#121212', color: '#fff', py: 8 }}>
-      <Container maxWidth="lg">
+    <Box
+      sx={{
+        backgroundColor: '#121212',
+        color: '#fff',
+        py: 8,
+        maxWidth: '130vh',
+      }}
+    >
+      <Container>
         {/* ABOUT ME TITLE */}
         <Box display="flex" alignItems="center" mb={4}>
           <Typography
